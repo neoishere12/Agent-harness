@@ -16,15 +16,13 @@ curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/inst
 
 ## Cursor
 
-Run these from your project root.
-
-For rules, copy this:
+For rules, run this from your project root:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/install.sh | bash -s cursor-rule
 ```
 
-For skills, copy this:
+For personal skills, copy this:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/install.sh | bash -s cursor-skill

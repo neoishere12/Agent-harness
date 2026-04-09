@@ -15,7 +15,7 @@ Usage: install.sh [codex|claude|cursor|cursor-rule|cursor-skill]
   claude        Install the skill into ~/.claude/skills
   cursor        Install the Cursor project-rule equivalent into ./.cursor/rules
   cursor-rule   Install the Cursor project-rule equivalent into ./.cursor/rules
-  cursor-skill  Install the skill into ./.cursor/skills
+  cursor-skill  Install the skill into $CURSOR_HOME/skills or ~/.cursor/skills
 EOF
 }
 
@@ -104,10 +104,11 @@ EOF
     echo "Reopen Cursor or start a new Agent chat in this project to load the rule."
     ;;
   cursor-skill)
-    cursor_skills_dir="${PWD}/.cursor/skills"
+    cursor_home="${CURSOR_HOME:-${HOME}/.cursor}"
+    cursor_skills_dir="${cursor_home}/skills"
     install_folder "${cursor_skills_dir}"
     echo "Installed ${skill_name} to ${cursor_skills_dir}/${skill_name}"
-    echo "Reopen Cursor or start a new Agent chat in this project to load the skill."
+    echo "Reopen Cursor or start a new Agent chat to load the skill."
     ;;
   *)
     usage
