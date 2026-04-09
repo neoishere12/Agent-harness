@@ -16,10 +16,16 @@ curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/inst
 
 ## Cursor
 
-Cursor's official reusable instruction format is project rules in `.cursor/rules`, so this installs the Cursor-native equivalent from your project root.
+Run these from your project root.
 
-Run this from your project root:
+For rules, copy this:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/install.sh | bash -s cursor
+curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/install.sh | bash -s cursor-rule
+```
+
+For skills, copy this:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/install.sh | bash -s cursor-skill
 ```

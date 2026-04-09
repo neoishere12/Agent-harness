@@ -9,11 +9,13 @@ tarball_url="https://codeload.github.com/${repo_owner}/${repo_name}/tar.gz/refs/
 
 usage() {
   cat <<'EOF'
-Usage: install.sh [codex|claude|cursor]
+Usage: install.sh [codex|claude|cursor|cursor-rule|cursor-skill]
 
-  codex   Install the skill into $CODEX_HOME/skills or ~/.codex/skills
-  claude  Install the skill into ~/.claude/skills
-  cursor  Install the Cursor project-rule equivalent into ./.cursor/rules
+  codex         Install the skill into $CODEX_HOME/skills or ~/.codex/skills
+  claude        Install the skill into ~/.claude/skills
+  cursor        Install the Cursor project-rule equivalent into ./.cursor/rules
+  cursor-rule   Install the Cursor project-rule equivalent into ./.cursor/rules
+  cursor-skill  Install the skill into ./.cursor/skills
 EOF
 }
 
@@ -66,7 +68,7 @@ case "${target}" in
     echo "Installed ${skill_name} to ${HOME}/.claude/skills/${skill_name}"
     echo "Restart Claude Code to pick up the new skill."
     ;;
-  cursor)
+  cursor|cursor-rule)
     cursor_rules_dir="${PWD}/.cursor/rules"
     cursor_support_dir="${cursor_rules_dir}/${skill_name}-support"
 
@@ -100,6 +102,12 @@ EOF
     echo "Installed the Cursor rule to ${cursor_rules_dir}/${skill_name}.mdc"
     echo "Installed supporting files to ${cursor_support_dir}"
     echo "Reopen Cursor or start a new Agent chat in this project to load the rule."
+    ;;
+  cursor-skill)
+    cursor_skills_dir="${PWD}/.cursor/skills"
+    install_folder "${cursor_skills_dir}"
+    echo "Installed ${skill_name} to ${cursor_skills_dir}/${skill_name}"
+    echo "Reopen Cursor or start a new Agent chat in this project to load the skill."
     ;;
   *)
     usage
