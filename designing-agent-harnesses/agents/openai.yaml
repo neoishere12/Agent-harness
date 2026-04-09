@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Harness Engineering"
+  short_description: "Design long-running coding harnesses"
+  default_prompt: "Use $designing-agent-harnesses to design or refine a long-running coding-agent harness for this repo."
