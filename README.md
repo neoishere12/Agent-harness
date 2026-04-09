@@ -1,6 +1,6 @@
 # Agent Harness
 
-Copy and run the line for your tool to install the `designing-agent-harnesses` skill.
+Copy and run the line for your tool to install the `designing-agent-harnesses` workflow in the format your tool supports.
 
 ## Codex
 
@@ -15,6 +15,8 @@ curl -fsSL https://raw.githubusercontent.com/neoishere12/Agent-harness/main/inst
 ```
 
 ## Cursor
+
+Cursor's official reusable instruction format is project rules in `.cursor/rules`, so this installs the Cursor-native equivalent from your project root.
 
 Run this from your project root:
 

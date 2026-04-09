@@ -13,7 +13,7 @@ Usage: install.sh [codex|claude|cursor]
 
   codex   Install the skill into $CODEX_HOME/skills or ~/.codex/skills
   claude  Install the skill into ~/.claude/skills
-  cursor  Install the skill into ./.cursor/rules for the current project
+  cursor  Install the Cursor project-rule equivalent into ./.cursor/rules
 EOF
 }
 
@@ -44,6 +44,16 @@ install_folder() {
   cp -R "${source_dir}" "${destination_root}/"
 }
 
+strip_frontmatter() {
+  local input_file="$1"
+
+  awk '
+    NR == 1 && $0 == "---" { in_frontmatter = 1; next }
+    in_frontmatter && $0 == "---" { in_frontmatter = 0; next }
+    !in_frontmatter { print }
+  ' "${input_file}"
+}
+
 case "${target}" in
   codex)
     codex_home="${CODEX_HOME:-${HOME}/.codex}"
@@ -58,15 +68,37 @@ case "${target}" in
     ;;
   cursor)
     cursor_rules_dir="${PWD}/.cursor/rules"
-    install_folder "${cursor_rules_dir}"
-    cat > "${cursor_rules_dir}/${skill_name}.mdc" <<EOF
+    cursor_support_dir="${cursor_rules_dir}/${skill_name}-support"
+
+    mkdir -p "${cursor_rules_dir}"
+    rm -rf "${cursor_support_dir}" "${cursor_rules_dir}/${skill_name}.mdc"
+    mkdir -p "${cursor_support_dir}"
+
+    cp -R "${source_dir}/agents" "${cursor_support_dir}/"
+    cp -R "${source_dir}/references" "${cursor_support_dir}/"
+
+    {
+      cat <<'EOF'
 ---
-description: Use when designing, refining, or debugging long-running coding-agent harnesses for software work.
+description: Use when designing, refining, or debugging long-running coding-agent harnesses for software work, especially when agents drift on multi-hour tasks, under-scope from short prompts, miss last-mile behavior, or need better planning, observability, repository context, and mechanical guardrails.
+alwaysApply: false
 ---
 
-@${skill_name}/SKILL.md
 EOF
-    echo "Installed ${skill_name} to ${cursor_rules_dir}/${skill_name}"
+      strip_frontmatter "${source_dir}/SKILL.md"
+      cat <<EOF
+
+## Attached References
+
+@${skill_name}-support/references/harness-artifacts.md
+@${skill_name}-support/references/repository-layout.md
+@${skill_name}-support/references/source-synthesis.md
+@${skill_name}-support/agents/openai.yaml
+EOF
+    } > "${cursor_rules_dir}/${skill_name}.mdc"
+
+    echo "Installed the Cursor rule to ${cursor_rules_dir}/${skill_name}.mdc"
+    echo "Installed supporting files to ${cursor_support_dir}"
     echo "Reopen Cursor or start a new Agent chat in this project to load the rule."
     ;;
   *)
